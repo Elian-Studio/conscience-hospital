@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import type { CreateReviewInput, ReviewListParams } from "@/types/review";
 import type { PaginatedResult } from "@/types/hospital";
-import type { Review } from "@/generated/prisma";
+import type { Review } from "@/generated/prisma/client";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;

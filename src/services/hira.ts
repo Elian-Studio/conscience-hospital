@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import type { HiraEvaluation } from "@/generated/prisma";
+import type { HiraEvaluation } from "@/generated/prisma/client";
 
 export async function getHiraEvaluation(
   hospitalId: string
