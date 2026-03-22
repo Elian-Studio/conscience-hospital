@@ -1,0 +1,254 @@
+[
+  {
+    "name": "서울숲내과의원",
+    "address": "서울특별시 성동구 서울숲2길 18",
+    "phone": "02-461-7533",
+    "latitude": 37.5445,
+    "longitude": 127.0440,
+    "categorySlug": "internal-medicine",
+    "source": "blog"
+  },
+  {
+    "name": "참좋은내과",
+    "address": "서울특별시 강남구 역삼동 707-34",
+    "phone": "02-555-7582",
+    "latitude": 37.5012,
+    "longitude": 127.0396,
+    "categorySlug": "internal-medicine",
+    "source": "blog"
+  },
+  {
+    "name": "연세하나이비인후과",
+    "address": "서울특별시 마포구 양화로 45",
+    "phone": "02-332-0025",
+    "latitude": 37.5567,
+    "longitude": 126.9234,
+    "categorySlug": "ent",
+    "source": "blog"
+  },
+  {
+    "name": "바른정형외과",
+    "address": "서울특별시 서초구 서초대로 260",
+    "phone": "02-588-7001",
+    "latitude": 37.4923,
+    "longitude": 127.0078,
+    "categorySlug": "orthopedics",
+    "source": "blog"
+  },
+  {
+    "name": "참사랑소아청소년과",
+    "address": "서울특별시 송파구 올림픽로 135",
+    "phone": "02-421-5200",
+    "latitude": 37.5133,
+    "longitude": 127.1001,
+    "categorySlug": "pediatrics",
+    "source": "blog"
+  },
+  {
+    "name": "미소안과의원",
+    "address": "서울특별시 종로구 종로 33",
+    "phone": "02-722-1233",
+    "latitude": 37.5700,
+    "longitude": 126.9920,
+    "categorySlug": "ophthalmology",
+    "source": "blog"
+  },
+  {
+    "name": "행복한피부과",
+    "address": "서울특별시 강서구 화곡로 264",
+    "phone": "02-2602-7533",
+    "latitude": 37.5417,
+    "longitude": 126.8494,
+    "categorySlug": "dermatology",
+    "source": "blog"
+  },
+  {
+    "name": "든든외과의원",
+    "address": "서울특별시 노원구 상계로 70",
+    "phone": "02-933-7811",
+    "latitude": 37.6545,
+    "longitude": 127.0612,
+    "categorySlug": "surgery",
+    "source": "blog"
+  },
+  {
+    "name": "마음편한정신건강의학과",
+    "address": "서울특별시 영등포구 여의대로 108",
+    "phone": "02-783-4002",
+    "latitude": 37.5245,
+    "longitude": 126.9245,
+    "categorySlug": "psychiatry",
+    "source": "blog"
+  },
+  {
+    "name": "온가족가정의학과",
+    "address": "서울특별시 동작구 상도로 369",
+    "phone": "02-814-0080",
+    "latitude": 37.4969,
+    "longitude": 126.9531,
+    "categorySlug": "family-medicine",
+    "source": "blog"
+  },
+  {
+    "name": "수원좋은내과",
+    "address": "경기도 수원시 영통구 봉영로 1612",
+    "phone": "031-203-7533",
+    "latitude": 37.2636,
+    "longitude": 127.0286,
+    "categorySlug": "internal-medicine",
+    "source": "blog"
+  },
+  {
+    "name": "분당서울대병원정형외과",
+    "address": "경기도 성남시 분당구 구미로 173번길 82",
+    "phone": "031-787-7199",
+    "latitude": 37.3520,
+    "longitude": 127.1236,
+    "categorySlug": "orthopedics",
+    "source": "blog"
+  },
+  {
+    "name": "일산참소아과",
+    "address": "경기도 고양시 일산서구 중앙로 1305",
+    "phone": "031-914-1230",
+    "latitude": 37.6780,
+    "longitude": 126.7690,
+    "categorySlug": "pediatrics",
+    "source": "blog"
+  },
+  {
+    "name": "안양밝은안과",
+    "address": "경기도 안양시 동안구 관평로 182",
+    "phone": "031-387-7588",
+    "latitude": 37.3943,
+    "longitude": 126.9568,
+    "categorySlug": "ophthalmology",
+    "source": "blog"
+  },
+  {
+    "name": "용인미래이비인후과",
+    "address": "경기도 용인시 수지구 풍덕천로 118",
+    "phone": "031-262-5001",
+    "latitude": 37.3219,
+    "longitude": 127.0980,
+    "categorySlug": "ent",
+    "source": "blog"
+  },
+  {
+    "name": "해운대참내과",
+    "address": "부산광역시 해운대구 해운대로 570",
+    "phone": "051-744-7533",
+    "latitude": 35.1631,
+    "longitude": 129.1635,
+    "categorySlug": "internal-medicine",
+    "source": "blog"
+  },
+  {
+    "name": "서면바른외과",
+    "address": "부산광역시 부산진구 중앙대로 680",
+    "phone": "051-803-0075",
+    "latitude": 35.1579,
+    "longitude": 129.0600,
+    "categorySlug": "surgery",
+    "source": "blog"
+  },
+  {
+    "name": "부산사랑소아과",
+    "address": "부산광역시 남구 수영로 312",
+    "phone": "051-622-3002",
+    "latitude": 35.1365,
+    "longitude": 129.0845,
+    "categorySlug": "pediatrics",
+    "source": "blog"
+  },
+  {
+    "name": "대구밝은정형외과",
+    "address": "대구광역시 수성구 동대구로 240",
+    "phone": "053-756-2800",
+    "latitude": 35.8568,
+    "longitude": 128.6305,
+    "categorySlug": "orthopedics",
+    "source": "blog"
+  },
+  {
+    "name": "대구온누리내과",
+    "address": "대구광역시 중구 국채보상로 660",
+    "phone": "053-422-7533",
+    "latitude": 35.8714,
+    "longitude": 128.5956,
+    "categorySlug": "internal-medicine",
+    "source": "blog"
+  },
+  {
+    "name": "대전좋은이비인후과",
+    "address": "대전광역시 서구 둔산로 100",
+    "phone": "042-472-5001",
+    "latitude": 36.3504,
+    "longitude": 127.3845,
+    "categorySlug": "ent",
+    "source": "blog"
+  },
+  {
+    "name": "대전참피부과",
+    "address": "대전광역시 유성구 대학로 99",
+    "phone": "042-823-7575",
+    "latitude": 36.3620,
+    "longitude": 127.3564,
+    "categorySlug": "dermatology",
+    "source": "blog"
+  },
+  {
+    "name": "광주밝은치과",
+    "address": "광주광역시 서구 상무중앙로 110",
+    "phone": "062-383-2875",
+    "latitude": 35.1530,
+    "longitude": 126.8895,
+    "categorySlug": "general-dental",
+    "source": "blog"
+  },
+  {
+    "name": "광주우리한의원",
+    "address": "광주광역시 북구 용봉로 77",
+    "phone": "062-265-0075",
+    "latitude": 35.1744,
+    "longitude": 126.9120,
+    "categorySlug": "general-korean",
+    "source": "blog"
+  },
+  {
+    "name": "인천사랑치과",
+    "address": "인천광역시 남동구 구월로 177",
+    "phone": "032-467-2800",
+    "latitude": 37.4500,
+    "longitude": 126.7310,
+    "categorySlug": "general-dental",
+    "source": "blog"
+  },
+  {
+    "name": "제주올레동물병원",
+    "address": "제주특별자치도 제주시 연동 312-24",
+    "phone": "064-747-7582",
+    "latitude": 33.4890,
+    "longitude": 126.4983,
+    "categorySlug": "veterinary",
+    "source": "blog"
+  },
+  {
+    "name": "강남바른교정치과",
+    "address": "서울특별시 강남구 강남대로 396",
+    "phone": "02-558-2875",
+    "latitude": 37.4979,
+    "longitude": 127.0276,
+    "categorySlug": "orthodontics",
+    "source": "blog"
+  },
+  {
+    "name": "송파한방내과한의원",
+    "address": "서울특별시 송파구 백제고분로 396",
+    "phone": "02-415-0075",
+    "latitude": 37.5080,
+    "longitude": 127.0890,
+    "categorySlug": "korean-internal",
+    "source": "blog"
+  }
+]

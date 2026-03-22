@@ -1,0 +1,234 @@
+[
+  {
+    "id": "cat_medical",
+    "name": "의사 전문과목",
+    "slug": "medical",
+    "parentId": null,
+    "icon": "stethoscope",
+    "displayOrder": 1
+  },
+  {
+    "id": "cat_internal",
+    "name": "내과",
+    "slug": "internal-medicine",
+    "parentId": "cat_medical",
+    "icon": "heart",
+    "displayOrder": 1
+  },
+  {
+    "id": "cat_surgery",
+    "name": "외과",
+    "slug": "surgery",
+    "parentId": "cat_medical",
+    "icon": "scissors",
+    "displayOrder": 2
+  },
+  {
+    "id": "cat_pediatrics",
+    "name": "소아청소년과",
+    "slug": "pediatrics",
+    "parentId": "cat_medical",
+    "icon": "baby",
+    "displayOrder": 3
+  },
+  {
+    "id": "cat_obgyn",
+    "name": "산부인과",
+    "slug": "obgyn",
+    "parentId": "cat_medical",
+    "icon": "flower",
+    "displayOrder": 4
+  },
+  {
+    "id": "cat_orthopedics",
+    "name": "정형외과",
+    "slug": "orthopedics",
+    "parentId": "cat_medical",
+    "icon": "bone",
+    "displayOrder": 5
+  },
+  {
+    "id": "cat_dermatology",
+    "name": "피부과",
+    "slug": "dermatology",
+    "parentId": "cat_medical",
+    "icon": "shield",
+    "displayOrder": 6
+  },
+  {
+    "id": "cat_ent",
+    "name": "이비인후과",
+    "slug": "ent",
+    "parentId": "cat_medical",
+    "icon": "ear",
+    "displayOrder": 7
+  },
+  {
+    "id": "cat_ophthalmology",
+    "name": "안과",
+    "slug": "ophthalmology",
+    "parentId": "cat_medical",
+    "icon": "eye",
+    "displayOrder": 8
+  },
+  {
+    "id": "cat_urology",
+    "name": "비뇨의학과",
+    "slug": "urology",
+    "parentId": "cat_medical",
+    "icon": "droplet",
+    "displayOrder": 9
+  },
+  {
+    "id": "cat_neurosurgery",
+    "name": "신경외과",
+    "slug": "neurosurgery",
+    "parentId": "cat_medical",
+    "icon": "brain",
+    "displayOrder": 10
+  },
+  {
+    "id": "cat_psychiatry",
+    "name": "정신건강의학과",
+    "slug": "psychiatry",
+    "parentId": "cat_medical",
+    "icon": "smile",
+    "displayOrder": 11
+  },
+  {
+    "id": "cat_family",
+    "name": "가정의학과",
+    "slug": "family-medicine",
+    "parentId": "cat_medical",
+    "icon": "home",
+    "displayOrder": 12
+  },
+  {
+    "id": "cat_neurology",
+    "name": "신경과",
+    "slug": "neurology",
+    "parentId": "cat_medical",
+    "icon": "zap",
+    "displayOrder": 13
+  },
+  {
+    "id": "cat_thoracic",
+    "name": "흉부외과",
+    "slug": "thoracic-surgery",
+    "parentId": "cat_medical",
+    "icon": "wind",
+    "displayOrder": 14
+  },
+  {
+    "id": "cat_rehab",
+    "name": "재활의학과",
+    "slug": "rehabilitation",
+    "parentId": "cat_medical",
+    "icon": "activity",
+    "displayOrder": 15
+  },
+  {
+    "id": "cat_dental",
+    "name": "치과",
+    "slug": "dental",
+    "parentId": null,
+    "icon": "tooth",
+    "displayOrder": 2
+  },
+  {
+    "id": "cat_general_dental",
+    "name": "일반치과",
+    "slug": "general-dental",
+    "parentId": "cat_dental",
+    "icon": "tooth",
+    "displayOrder": 1
+  },
+  {
+    "id": "cat_orthodontics",
+    "name": "교정과",
+    "slug": "orthodontics",
+    "parentId": "cat_dental",
+    "icon": "align-center",
+    "displayOrder": 2
+  },
+  {
+    "id": "cat_prosthodontics",
+    "name": "보철과",
+    "slug": "prosthodontics",
+    "parentId": "cat_dental",
+    "icon": "tool",
+    "displayOrder": 3
+  },
+  {
+    "id": "cat_pediatric_dental",
+    "name": "소아치과",
+    "slug": "pediatric-dental",
+    "parentId": "cat_dental",
+    "icon": "baby",
+    "displayOrder": 4
+  },
+  {
+    "id": "cat_oral_surgery",
+    "name": "구강외과",
+    "slug": "oral-surgery",
+    "parentId": "cat_dental",
+    "icon": "scissors",
+    "displayOrder": 5
+  },
+  {
+    "id": "cat_korean",
+    "name": "한의원",
+    "slug": "korean-medicine",
+    "parentId": null,
+    "icon": "leaf",
+    "displayOrder": 3
+  },
+  {
+    "id": "cat_general_korean",
+    "name": "일반한의원",
+    "slug": "general-korean",
+    "parentId": "cat_korean",
+    "icon": "leaf",
+    "displayOrder": 1
+  },
+  {
+    "id": "cat_acupuncture",
+    "name": "침구과",
+    "slug": "acupuncture",
+    "parentId": "cat_korean",
+    "icon": "target",
+    "displayOrder": 2
+  },
+  {
+    "id": "cat_korean_internal",
+    "name": "한방내과",
+    "slug": "korean-internal",
+    "parentId": "cat_korean",
+    "icon": "heart",
+    "displayOrder": 3
+  },
+  {
+    "id": "cat_etc",
+    "name": "기타",
+    "slug": "etc",
+    "parentId": null,
+    "icon": "more-horizontal",
+    "displayOrder": 4
+  },
+  {
+    "id": "cat_vet",
+    "name": "동물병원",
+    "slug": "veterinary",
+    "parentId": "cat_etc",
+    "icon": "paw",
+    "displayOrder": 1
+  },
+  {
+    "id": "cat_pharmacy",
+    "name": "약국",
+    "slug": "pharmacy",
+    "parentId": "cat_etc",
+    "icon": "pill",
+    "displayOrder": 2
+  }
+]
