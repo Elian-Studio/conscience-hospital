@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Hospital {
+  id              String   @id @default(cuid())
+  name            String
+  address         String
+  phone           String?
+  latitude        Float
+  longitude       Float
+  categoryId      String
+  ykiho           String?
+  doctorCount     Int?
+  specialistCount Int?
+  conscScore      Float?
+  isVerified      Boolean  @default(false)
+  source          String   @default("community")
+  openTime        String?
+  closeTime       String?
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category       Category         @relation(fields: [categoryId], references: [id])
+  reviews        Review[]
+  hiraEvaluation HiraEvaluation?
+
+  @@index([categoryId])
+  @@index([latitude, longitude])
+}
+
+model Category {
+  id           String     @id @default(cuid())
+  name         String
+  slug         String     @unique
+  parentId     String?
+  icon         String?
+  displayOrder Int        @default(0)
+
+  parent    Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryChildren")
+  hospitals Hospital[]
+}
+
+model HiraEvaluation {
+  id             String   @id @default(cuid())
+  hospitalId     String   @unique
+  antibioticRate Int?
+  injectionRate  Int?
+  medicineCount  Int?
+  overallGrade   Int?
+  evaluationYear Int
+  updatedAt      DateTime @updatedAt
+
+  hospital Hospital @relation(fields: [hospitalId], references: [id])
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  hospitalId String
+  rating     Int
+  content    String?
+  isConsc    Boolean  @default(true)
+  authorName String?
+  createdAt  DateTime @default(now())
+
+  hospital Hospital @relation(fields: [hospitalId], references: [id])
+
+  @@index([hospitalId])
+}
+
+model Recommendation {
+  id           String   @id @default(cuid())
+  hospitalName String
+  address      String
+  category     String
+  reason       String
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+}
