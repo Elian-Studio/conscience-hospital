@@ -1,4 +1,4 @@
-import type { Hospital, HiraEvaluation, Review, Category } from "@/generated/prisma";
+import type { Hospital, HiraEvaluation, Review, Category } from "@/generated/prisma/client";
 
 export type HospitalWithCategory = Hospital & {
   category: Category;

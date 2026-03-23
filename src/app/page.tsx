@@ -1,65 +1,113 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
+import type { HospitalListItem } from "@/types/hospital";
+import type { PaginatedResult } from "@/types/hospital";
+import HospitalList from "@/components/hospital/HospitalList";
+import CategoryFilter from "@/components/category/CategoryFilter";
+import SearchBar from "@/components/ui/SearchBar";
+
+const KakaoMap = dynamic(() => import("@/components/map/KakaoMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full items-center justify-center bg-gray-100">
+      <p className="text-sm text-gray-500">지도를 불러오는 중...</p>
+    </div>
+  ),
+});
+
+interface CategoryItem {
+  id: string;
+  name: string;
+  slug: string;
+  children?: CategoryItem[];
+}
+
+export default function HomePage() {
+  const [hospitals, setHospitals] = useState<HospitalListItem[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [showList, setShowList] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data: { data: CategoryItem[] }) => {
+        const flat = data.data.flatMap((parent) => [
+          parent,
+          ...(parent.children ?? []),
+        ]);
+        setCategories(flat);
+      })
+      .catch(console.error);
+  }, []);
+
+  const fetchHospitals = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (selectedCategory) params.set("categoryId", selectedCategory);
+      if (searchQuery) params.set("search", searchQuery);
+      params.set("limit", "50");
+
+      const res = await fetch(`/api/hospitals?${params}`);
+      const result: PaginatedResult<HospitalListItem> = await res.json();
+      setHospitals(result.data);
+    } catch (err) {
+      console.error("Failed to fetch hospitals:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [selectedCategory, searchQuery]);
+
+  useEffect(() => {
+    fetchHospitals();
+  }, [fetchHospitals]);
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
+  const handleCategorySelect = useCallback((id: string | null) => {
+    setSelectedCategory(id);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="flex flex-1 flex-col lg:flex-row">
+      {/* Side panel */}
+      <aside
+        className={`${
+          showList ? "translate-y-0" : "translate-y-full lg:translate-y-0"
+        } fixed inset-x-0 bottom-0 z-30 flex max-h-[60vh] flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl transition-transform lg:static lg:z-auto lg:w-96 lg:max-h-none lg:rounded-none lg:shadow-none lg:border-r lg:border-gray-200`}
+      >
+        <SearchBar onSearch={handleSearch} />
+        <CategoryFilter
+          categories={categories}
+          selectedId={selectedCategory}
+          onSelect={handleCategorySelect}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className="flex-1 overflow-y-auto">
+          <HospitalList hospitals={hospitals} isLoading={isLoading} />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </aside>
+
+      {/* Map area */}
+      <div className="relative flex-1" style={{ minHeight: "calc(100vh - 56px)" }}>
+        <KakaoMap hospitals={hospitals} />
+
+        {/* Mobile toggle */}
+        <button
+          type="button"
+          onClick={() => setShowList(!showList)}
+          className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 rounded-full bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-green-700 transition-colors lg:hidden"
+          aria-label={showList ? "지도 보기" : "병원 리스트 보기"}
+        >
+          {showList ? "지도 보기" : `병원 목록 (${hospitals.length})`}
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import type { Review } from "@/generated/prisma";
+import type { Review } from "@/generated/prisma/client";
 
 export type { Review };
 
