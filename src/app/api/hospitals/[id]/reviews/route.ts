@@ -67,10 +67,12 @@ export async function POST(
 
     return Response.json(review, { status: 201 });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Failed to create review";
-    const status = message === "Hospital not found" ? 404 : 500;
     console.error("POST /api/hospitals/[id]/reviews error:", error);
-    return Response.json({ error: message }, { status });
+    const isNotFound =
+      error instanceof Error && error.message === "Hospital not found";
+    return Response.json(
+      { error: isNotFound ? "Hospital not found" : "Failed to create review" },
+      { status: isNotFound ? 404 : 500 }
+    );
   }
 }
