@@ -17,7 +17,11 @@ export async function GET(request: NextRequest) {
         : undefined,
     });
 
-    return Response.json(result);
+    return Response.json(result, {
+      headers: {
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      },
+    });
   } catch (error) {
     console.error("GET /api/hospitals error:", error);
     return Response.json(
