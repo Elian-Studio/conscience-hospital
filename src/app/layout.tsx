@@ -14,10 +14,37 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_NAME = "양심병원 지도";
+const SITE_DESCRIPTION =
+  "과잉진료 없는 양심 병원을 지도에서 쉽게 찾아보세요. 커뮤니티 추천과 HIRA 공공데이터로 검증된 병원 정보를 제공합니다.";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://good-hospital.vercel.app";
+
 export const metadata: Metadata = {
-  title: "양심병원 지도",
-  description:
-    "과잉진료 없는 양심 병원을 지도에서 쉽게 찾아보세요. 커뮤니티 추천과 HIRA 공공데이터로 검증된 병원 정보를 제공합니다.",
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    locale: "ko_KR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
 };
 
 export default function RootLayout({

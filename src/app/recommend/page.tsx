@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import RecommendForm from "@/components/recommend/RecommendForm";
+
+export const metadata: Metadata = {
+  title: "양심 병원 제보",
+  description:
+    "과잉진료 없는 양심적인 병원을 알고 계신가요? 제보해 주시면 검토 후 등록됩니다.",
+};
 
 export default function RecommendPage() {
   return (
