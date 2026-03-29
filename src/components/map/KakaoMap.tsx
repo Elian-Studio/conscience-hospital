@@ -22,6 +22,7 @@ declare global {
           options: { center: unknown; level: number }
         ) => KakaoMap;
         LatLng: new (lat: number, lng: number) => unknown;
+        LatLngBounds: new () => KakaoLatLngBounds;
         Marker: new (options: {
           position: unknown;
           map?: KakaoMap;
@@ -35,12 +36,13 @@ declare global {
           averageCenter: boolean;
           minLevel: number;
           markers?: KakaoMarker[];
+          styles?: ClusterStyle[];
         }) => KakaoMarkerClusterer;
         event: {
           addListener: (
             target: unknown,
             type: string,
-            handler: () => void
+            handler: (...args: unknown[]) => void
           ) => void;
         };
         services: {
@@ -51,16 +53,35 @@ declare global {
   }
 }
 
+interface ClusterStyle {
+  width: string;
+  height: string;
+  background: string;
+  borderRadius: string;
+  color: string;
+  textAlign: string;
+  fontWeight: string;
+  lineHeight: string;
+  fontSize: string;
+}
+
 interface KakaoMap {
   setCenter: (latlng: unknown) => void;
   getCenter: () => { getLat: () => number; getLng: () => number };
   setLevel: (level: number) => void;
   panTo: (latlng: unknown) => void;
+  getBounds: () => KakaoLatLngBounds;
+}
+
+interface KakaoLatLngBounds {
+  getSouthWest: () => { getLat: () => number; getLng: () => number };
+  getNorthEast: () => { getLat: () => number; getLng: () => number };
+  extend: (latlng: unknown) => void;
 }
 
 interface KakaoMarker {
   setMap: (map: KakaoMap | null) => void;
-  getPosition: () => unknown;
+  getPosition: () => { getLat: () => number; getLng: () => number };
 }
 
 interface KakaoInfoWindow {
@@ -76,6 +97,8 @@ interface KakaoMarkerClusterer {
 interface KakaoMapProps {
   hospitals: MapHospital[];
   onHospitalClick?: (hospitalId: string) => void;
+  onClusterClick?: (hospitalIds: string[]) => void;
+  autoLocate?: boolean;
   center?: { lat: number; lng: number };
   level?: number;
 }
@@ -83,6 +106,8 @@ interface KakaoMapProps {
 export default function KakaoMap({
   hospitals,
   onHospitalClick,
+  onClusterClick,
+  autoLocate = false,
   center = { lat: 37.5665, lng: 126.978 },
   level = 5,
 }: KakaoMapProps) {
@@ -90,6 +115,7 @@ export default function KakaoMap({
   const mapRef = useRef<KakaoMap | null>(null);
   const clustererRef = useRef<KakaoMarkerClusterer | null>(null);
   const infoWindowRef = useRef<KakaoInfoWindow | null>(null);
+  const markerHospitalMap = useRef<Map<KakaoMarker, string>>(new Map());
   const [isLoaded, setIsLoaded] = useState(false);
 
   const getScoreColor = (score: number | null) => {
@@ -98,6 +124,42 @@ export default function KakaoMap({
     if (score >= 60) return "#f59e0b";
     return "#dc2626";
   };
+
+  const clusterStyles: ClusterStyle[] = [
+    {
+      width: "40px",
+      height: "40px",
+      background: "rgba(22, 163, 74, 0.8)",
+      borderRadius: "50%",
+      color: "#fff",
+      textAlign: "center",
+      fontWeight: "700",
+      lineHeight: "40px",
+      fontSize: "14px",
+    },
+    {
+      width: "50px",
+      height: "50px",
+      background: "rgba(22, 163, 74, 0.85)",
+      borderRadius: "50%",
+      color: "#fff",
+      textAlign: "center",
+      fontWeight: "700",
+      lineHeight: "50px",
+      fontSize: "15px",
+    },
+    {
+      width: "60px",
+      height: "60px",
+      background: "rgba(22, 163, 74, 0.9)",
+      borderRadius: "50%",
+      color: "#fff",
+      textAlign: "center",
+      fontWeight: "700",
+      lineHeight: "60px",
+      fontSize: "16px",
+    },
+  ];
 
   const initMap = useCallback(() => {
     if (!containerRef.current || !window.kakao?.maps) return;
@@ -110,15 +172,51 @@ export default function KakaoMap({
       });
       mapRef.current = map;
 
-      clustererRef.current = new window.kakao.maps.MarkerClusterer({
+      const clusterer = new window.kakao.maps.MarkerClusterer({
         map,
         averageCenter: true,
-        minLevel: 6,
+        minLevel: 4,
+        styles: clusterStyles,
       });
+      clustererRef.current = clusterer;
+
+      // 클러스터 클릭 시 해당 클러스터의 마커들을 콜백으로 전달
+      if (onClusterClick) {
+        window.kakao.maps.event.addListener(
+          clusterer,
+          "clusterclick",
+          (cluster: { getMarkers: () => KakaoMarker[] }) => {
+            const clusterMarkers = cluster.getMarkers();
+            const ids: string[] = [];
+            for (const marker of clusterMarkers) {
+              const id = markerHospitalMap.current.get(marker);
+              if (id) ids.push(id);
+            }
+            onClusterClick(ids);
+          }
+        );
+      }
 
       setIsLoaded(true);
+
+      // 자동 현재 위치 이동
+      if (autoLocate) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const userLatLng = new window.kakao.maps.LatLng(
+              pos.coords.latitude,
+              pos.coords.longitude
+            );
+            map.panTo(userLatLng);
+            map.setLevel(4);
+          },
+          () => {
+            // 위치 권한 거부 시 기본 위치 유지
+          }
+        );
+      }
     });
-  }, [center.lat, center.lng, level]);
+  }, [center.lat, center.lng, level, autoLocate, onClusterClick]);
 
   useEffect(() => {
     const checkKakao = setInterval(() => {
@@ -136,6 +234,7 @@ export default function KakaoMap({
     const map = mapRef.current;
     const clusterer = clustererRef.current;
     clusterer.clear();
+    markerHospitalMap.current.clear();
 
     if (infoWindowRef.current) {
       infoWindowRef.current.close();
@@ -147,6 +246,9 @@ export default function KakaoMap({
         hospital.longitude
       );
       const marker = new window.kakao.maps.Marker({ position });
+
+      // 마커 ↔ 병원 ID 매핑 저장
+      markerHospitalMap.current.set(marker, hospital.id);
 
       const scoreColor = getScoreColor(hospital.conscScore ?? null);
       const scoreText =

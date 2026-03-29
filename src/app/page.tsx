@@ -31,6 +31,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showList, setShowList] = useState(false);
+  const [clusterFilter, setClusterFilter] = useState<string[] | null>(null);
 
   useEffect(() => {
     fetch("/api/categories")
@@ -67,6 +68,11 @@ export default function HomePage() {
     fetchHospitals();
   }, [fetchHospitals]);
 
+  // 카테고리/검색 변경 시 클러스터 필터 초기화
+  useEffect(() => {
+    setClusterFilter(null);
+  }, [selectedCategory, searchQuery]);
+
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
   }, []);
@@ -74,6 +80,22 @@ export default function HomePage() {
   const handleCategorySelect = useCallback((id: string | null) => {
     setSelectedCategory(id);
   }, []);
+
+  const handleClusterClick = useCallback((hospitalIds: string[]) => {
+    setClusterFilter(hospitalIds);
+    setShowList(true); // 모바일에서 자동으로 목록 패널 표시
+  }, []);
+
+  const handleClearClusterFilter = useCallback(() => {
+    setClusterFilter(null);
+  }, []);
+
+  // 클러스터 필터 적용 + 양심점수 내림차순 정렬
+  const displayHospitals = clusterFilter
+    ? hospitals
+        .filter((h) => clusterFilter.includes(h.id))
+        .sort((a, b) => (b.conscScore ?? 0) - (a.conscScore ?? 0))
+    : hospitals;
 
   return (
     <div className="flex flex-1 flex-col lg:flex-row">
@@ -89,14 +111,32 @@ export default function HomePage() {
           selectedId={selectedCategory}
           onSelect={handleCategorySelect}
         />
+        {clusterFilter && (
+          <div className="flex items-center justify-between border-b border-gray-200 bg-green-50 px-4 py-2">
+            <span className="text-xs font-medium text-green-700">
+              선택 영역 {displayHospitals.length}개 (양심점수순)
+            </span>
+            <button
+              type="button"
+              onClick={handleClearClusterFilter}
+              className="text-xs text-green-600 hover:text-green-800 font-medium"
+            >
+              전체 보기
+            </button>
+          </div>
+        )}
         <div className="flex-1 overflow-y-auto">
-          <HospitalList hospitals={hospitals} isLoading={isLoading} />
+          <HospitalList hospitals={displayHospitals} isLoading={isLoading} />
         </div>
       </aside>
 
       {/* Map area */}
-      <div className="relative flex-1" style={{ minHeight: "calc(100vh - 56px)" }}>
-        <KakaoMap hospitals={hospitals} />
+      <div className="relative flex-1" style={{ height: "calc(100vh - 56px)" }}>
+        <KakaoMap
+          hospitals={hospitals}
+          autoLocate
+          onClusterClick={handleClusterClick}
+        />
 
         {/* Mobile toggle */}
         <button
@@ -105,7 +145,7 @@ export default function HomePage() {
           className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 rounded-full bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-green-700 transition-colors lg:hidden"
           aria-label={showList ? "지도 보기" : "병원 리스트 보기"}
         >
-          {showList ? "지도 보기" : `병원 목록 (${hospitals.length})`}
+          {showList ? "지도 보기" : `병원 목록 (${displayHospitals.length})`}
         </button>
       </div>
     </div>
