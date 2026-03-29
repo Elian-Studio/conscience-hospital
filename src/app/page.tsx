@@ -131,7 +131,7 @@ export default function HomePage() {
       </aside>
 
       {/* Map area */}
-      <div className="relative flex-1" style={{ height: "calc(100vh - 56px)" }}>
+      <div className="relative flex-1 h-[calc(100vh-56px)]">
         <KakaoMap
           hospitals={hospitals}
           autoLocate
