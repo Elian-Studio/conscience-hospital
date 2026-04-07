@@ -98,7 +98,7 @@ export default function RootLayout({
         </header>
         <main className="flex flex-1 flex-col">{children}</main>
         <Script
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&libraries=services,clusterer&autoload=false`}
+          src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&libraries=services,clusterer&autoload=false`}
           strategy="afterInteractive"
         />
       </body>
