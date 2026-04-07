@@ -17,6 +17,8 @@ export type HospitalListItem = Hospital & {
 
 export type NearbyHospital = HospitalListItem & {
   distance: number;
+  hiraEvaluation: HiraEvaluation | null;
+  outOfRadius?: boolean;
 };
 
 export interface HospitalListParams {

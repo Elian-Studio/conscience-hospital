@@ -47,6 +47,12 @@ declare global {
         };
         services: {
           Status: { OK: string };
+          Geocoder: new () => {
+            addressSearch: (
+              address: string,
+              callback: (result: Array<{ y: string; x: string }>, status: string) => void
+            ) => void;
+          };
         };
       };
     };
@@ -185,8 +191,9 @@ export default function KakaoMap({
         window.kakao.maps.event.addListener(
           clusterer,
           "clusterclick",
-          (cluster: { getMarkers: () => KakaoMarker[] }) => {
-            const clusterMarkers = cluster.getMarkers();
+          (cluster: unknown) => {
+            const { getMarkers } = cluster as { getMarkers: () => KakaoMarker[] };
+            const clusterMarkers = getMarkers();
             const ids: string[] = [];
             for (const marker of clusterMarkers) {
               const id = markerHospitalMap.current.get(marker);

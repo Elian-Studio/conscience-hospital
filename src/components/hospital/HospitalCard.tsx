@@ -2,36 +2,13 @@
 
 import Link from "next/link";
 import type { HospitalListItem } from "@/types/hospital";
+import ConscScore from "./ConscScore";
 
 interface HospitalCardProps {
   hospital: HospitalListItem;
 }
 
-function getScoreBadge(score: number | null) {
-  if (score === null)
-    return { text: "미평가", bg: "bg-gray-100", color: "text-gray-500" };
-  if (score >= 80)
-    return {
-      text: `${Math.round(score)}점`,
-      bg: "bg-green-100",
-      color: "text-green-700",
-    };
-  if (score >= 60)
-    return {
-      text: `${Math.round(score)}점`,
-      bg: "bg-yellow-100",
-      color: "text-yellow-700",
-    };
-  return {
-    text: `${Math.round(score)}점`,
-    bg: "bg-red-100",
-    color: "text-red-700",
-  };
-}
-
 export default function HospitalCard({ hospital }: HospitalCardProps) {
-  const badge = getScoreBadge(hospital.conscScore);
-
   return (
     <Link
       href={`/hospital/${hospital.id}`}
@@ -46,11 +23,7 @@ export default function HospitalCard({ hospital }: HospitalCardProps) {
             {hospital.address}
           </p>
         </div>
-        <span
-          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${badge.bg} ${badge.color}`}
-        >
-          {badge.text}
-        </span>
+        <ConscScore score={hospital.conscScore ?? null} size="sm" />
       </div>
       <div className="mt-2 flex items-center gap-2">
         <span className="inline-flex items-center rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600">

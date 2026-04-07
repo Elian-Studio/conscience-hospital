@@ -122,14 +122,35 @@ function haversineDistance(
 
 export async function getNearbyHospitals(
   params: NearbyParams
-): Promise<NearbyHospital[]> {
+): Promise<{ hospitals: NearbyHospital[]; outOfRadius: boolean }> {
   const { latitude, longitude, radius, categoryId, limit = 50 } = params;
 
-  // Approximate bounding box for pre-filtering (1 degree latitude ~ 111km)
+  const results = await queryNearby(latitude, longitude, radius, categoryId, limit);
+
+  if (results.length > 0) {
+    return { hospitals: results, outOfRadius: false };
+  }
+
+  // No results in radius — expand to 50km and return closest
+  const fallbackResults = await queryNearby(latitude, longitude, 50, categoryId, limit);
+  return {
+    hospitals: fallbackResults.map((h) => ({ ...h, outOfRadius: true })),
+    outOfRadius: true,
+  };
+}
+
+async function queryNearby(
+  latitude: number,
+  longitude: number,
+  radius: number,
+  categoryId: string | undefined,
+  limit: number,
+): Promise<NearbyHospital[]> {
   const latDelta = radius / 111;
   const lonDelta = radius / (111 * Math.cos((latitude * Math.PI) / 180));
 
   const where: Record<string, unknown> = {
+    isVerified: true,
     latitude: {
       gte: latitude - latDelta,
       lte: latitude + latDelta,
@@ -148,6 +169,7 @@ export async function getNearbyHospitals(
     where,
     include: {
       category: { select: { id: true, name: true, slug: true } },
+      hiraEvaluation: true,
       _count: { select: { reviews: true } },
     },
   });
@@ -157,10 +179,8 @@ export async function getNearbyHospitals(
     distance: haversineDistance(latitude, longitude, h.latitude, h.longitude),
   }));
 
-  const nearby = withDistance
+  return withDistance
     .filter((h) => h.distance <= radius)
     .sort((a, b) => a.distance - b.distance)
-    .slice(0, limit);
-
-  return nearby as unknown as NearbyHospital[];
+    .slice(0, limit) as unknown as NearbyHospital[];
 }
